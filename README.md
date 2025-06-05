@@ -1,4 +1,4 @@
-# ICLR Submission: A Non-Contrastive Learning Framework for Sequential Recommendation with Preference-Preserving Profile Generation
+# TPAMI Extension: A Non-Contrastive Learning Framework for Sequential Recommendation with Preference-Preserving Profile Generation
 
 
 ## Requirements
