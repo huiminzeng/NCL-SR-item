@@ -8,6 +8,19 @@ For our running environment see requirements.txt
 - We use the public datasets that can be downloaded from the url mentioned in the paper.
 - One can use the true url of each dataset for the url function defined in the datasets.py files (e.g., beauty.py) to automatically download and process the files.
 - One need to change PATH in config.py
+
+  - Example folder structure
+```
+    ├── ...
+    ├── Data                   
+    │   ├── auto 
+    │   ├── beauty
+    │   ├── games
+    │   └── ...
+    ├── src
+    └── ...
+```
+
 ## Scripts.
 - Stage 1: train LRURec and E5 (Hybrid Retrieval)
    - Example
