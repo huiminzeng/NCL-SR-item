@@ -3,6 +3,5 @@
 **/experiments
 **/llm_results
 **/.cache
-*.sh
 *.DS_Store
 **/Data
