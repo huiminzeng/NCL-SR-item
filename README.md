@@ -20,6 +20,7 @@ For our running environment see requirements.txt
     ├── src
     └── ...
 ```
+- games data must be downloaded from here: https://drive.google.com/drive/folders/1fVJJtCB3_7o93jIWaU3LUUwPOX1o1i6r?usp=sharing. After downloading, manually create a folder named `games` under `Data`. Then, place `games.csv` and `games_meta.json.gz` under `Data/games`.
 
 ## Scripts.
 - Stage 1: train LRURec and E5 (Hybrid Retrieval)
