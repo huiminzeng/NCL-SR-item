@@ -12,9 +12,14 @@ import pdb
 import wget
 from pathlib import Path
 import libarchive
-
+import subprocess
 
 def download(url, savepath):
+    url = url
+    output_file = savepath
+    # Run wget command
+    subprocess.run(["wget", url, "-O", output_file], check=True)
+
     urllib.request.urlretrieve(url, str(savepath))
     print()
 

@@ -100,10 +100,11 @@ def main(args):
     model.init_non_cl()
     model.to(args.device)
     load_root = os.path.join('experiments/stage_2', 
-                                args.dataset_code, args.ds_mode, 
-                                'num_replace_' + str(args.num_replace), 
-                                'lambda_alignment_' + str(args.mce_gamma_a),
-                                'lambda_uniformity_' + str(args.mce_gamma_u))
+                            args.dataset_code, args.ds_mode, 
+                            'num_replace_' + str(args.num_replace), 
+                            'lambda_alignment_' + str(args.mce_gamma_a),
+                            'lambda_uniformity_' + str(args.mce_gamma_u),
+                            'lambda_item_' + str(args.mce_gamma_s))
 
     print("we are loading model from: ", load_root)
     model_load_name = os.path.join(load_root, 'model.checkpoint')

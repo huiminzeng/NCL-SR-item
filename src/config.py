@@ -3,7 +3,7 @@ import random
 import torch
 import argparse
 
-RAW_DATASET_ROOT_FOLDER = '../../Data'
+RAW_DATASET_ROOT_FOLDER = 'Data'
 EXPERIMENT_ROOT = 'experiments'
 STATE_DICT_KEY = 'model_state_dict'
 OPTIMIZER_STATE_DICT_KEY = 'optimizer_state_dict'
@@ -42,6 +42,19 @@ def set_template(args):
     args.bert_num_blocks = 2
     args.bert_num_heads = 2
     args.bert_head_size = None
+
+    if args.dataset_code == 'beauty':
+        args.print_freq = 200
+    elif args.dataset_code == 'games':
+        args.print_freq = 150
+    elif args.dataset_code == 'sports':
+        args.print_freq = 300
+    elif args.dataset_code == 'toys_new':
+        args.print_freq = 190
+    elif args.dataset_code == 'office':
+        args.print_freq = 45
+    elif args.dataset_code == 'auto':
+        args.print_freq = 12
 
 
 parser = argparse.ArgumentParser()
@@ -85,7 +98,7 @@ parser.add_argument('--gamma', type=float, default=1)
 parser.add_argument('--enable_lr_warmup', type=bool, default=False)
 parser.add_argument('--warmup_steps', type=int, default=100)
 parser.add_argument('--margin', type=float, default=0.1)
-parser.add_argument('--print_freq', type=int, default=1000)
+parser.add_argument('--print_freq', type=int, default=None)
 
 ################
 # Evaluation

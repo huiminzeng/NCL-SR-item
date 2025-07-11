@@ -58,15 +58,17 @@ class BaseTrainer(metaclass=ABCMeta):
                 self.generate_dp_augmentations()
                 self.train_one_epoch(epoch)
 
-        if is_rank_0():
-            for k in [5,10]:
-                recall = self.best_meter.averages()['Recall@%d' % k]
-                ndcg = self.best_meter.averages()['NDCG@%d' % k]
+                break
 
-                print('Recall@{}: {:.4f}'.format(k, recall))
-                print('NDCG@{}: {:.4f}'.format(k, ndcg))
+        # if is_rank_0():
+        #     for k in [5,10]:
+        #         recall = self.best_meter.averages()['Recall@%d' % k]
+        #         ndcg = self.best_meter.averages()['NDCG@%d' % k]
 
-                print("="*50)
+        #         print('Recall@{}: {:.4f}'.format(k, recall))
+        #         print('NDCG@{}: {:.4f}'.format(k, ndcg))
+
+        #         print("="*50)
 
         if is_rank_0():
             print("Training is over.")  
@@ -97,39 +99,47 @@ class BaseTrainer(metaclass=ABCMeta):
             tqdm_dataloader.set_description(
                     'Epoch {}, Batch [{}]/[{}]loss {:.3f} '.format(epoch+1, batch_idx, len(self.train_loader), average_meter_set['loss'].avg)) 
 
-            if batch_idx % self.args.print_freq == 0 and batch_idx != 0:
-                self.validate() 
+            # break
+
+            # if batch_idx % self.args.print_freq == 0 and batch_idx != 0:
+            self.validate() 
+            
+            break
       
     def validate(self):
-        self.model.eval()
-        average_meter_set = AverageMeterSet()
-        with torch.no_grad():
-            tqdm_dataloader = tqdm(self.val_loader)
-            for batch_idx, batch in enumerate(tqdm_dataloader):
-                metrics = self.calculate_metrics(batch)
-                self._update_meter_set(average_meter_set, metrics)
-                self._update_dataloader_metrics(tqdm_dataloader, average_meter_set)
+        model_save_name = os.path.join(self.args.export_dir, 'model.checkpoint')
+        model_checkpoint = {'state_dict': self.model.state_dict()}
+        torch.save(model_checkpoint, model_save_name)
+        # self.model.eval()
+        # average_meter_set = AverageMeterSet()
+        # with torch.no_grad():
+        #     tqdm_dataloader = tqdm(self.val_loader)
+        #     for batch_idx, batch in enumerate(tqdm_dataloader):
+        #         metrics = self.calculate_metrics(batch)
+        #         self._update_meter_set(average_meter_set, metrics)
+        #         self._update_dataloader_metrics(tqdm_dataloader, average_meter_set)
 
-        for k in [5,10]:
-            recall = average_meter_set.averages()['Recall@%d' % k]
-            ndcg = average_meter_set.averages()['NDCG@%d' % k]
+        # for k in [5,10]:
+        #     recall = average_meter_set.averages()['Recall@%d' % k]
+        #     ndcg = average_meter_set.averages()['NDCG@%d' % k]
 
-            print('Recall@{}: {:.4f}'.format(k, recall))
-            print('NDCG@{}: {:.4f}'.format(k, ndcg))
+        #     print('Recall@{}: {:.4f}'.format(k, recall))
+        #     print('NDCG@{}: {:.4f}'.format(k, ndcg))
 
-            print("="*50)
+        #     print("="*50)
 
-        current_metric = average_meter_set.averages()["NDCG@10"] + average_meter_set.averages()["Recall@10"]
+        # current_metric = average_meter_set.averages()["NDCG@10"] + average_meter_set.averages()["Recall@10"]
 
-        if current_metric > self.best_metric:
-            self.best_metric = current_metric
-            self.best_meter = average_meter_set
+        # if current_metric > self.best_metric:
+        #     self.best_metric = current_metric
+        #     self.best_meter = average_meter_set
 
-            if self.args.ds_mode == '1_gpu':
-                model_save_name = os.path.join(self.args.export_dir, 'model.checkpoint')
-                model_checkpoint = {'state_dict': self.model.state_dict()}
-                torch.save(model_checkpoint, model_save_name)
-                
+        #     if self.args.ds_mode == '1_gpu':
+        #         model_save_name = os.path.join(self.args.export_dir, 'model.checkpoint')
+        #         model_checkpoint = {'state_dict': self.model.state_dict()}
+        #         torch.save(model_checkpoint, model_save_name)
+        
+        
     def to_device(self, batch):
         return [x.to(self.device) for x in batch]
 
